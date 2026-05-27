@@ -1,0 +1,53 @@
+# Node / React
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Python / Flask
+.venv/
+venv/
+ENV/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Android
+.gradle/
+local.properties
+.idea/workspace.xml
+.idea/libraries/
+.idea/modules.xml
+.idea/deploymentTargetSelector.xml
+.idea/misc.xml
+.idea/gradle.xml
+.idea/compiler.xml
+.idea/jarRepositories.xml
+build/
+android/app/build/
+android/app/release/
+android/local.properties
+
+# Databases / SQLite
+*.db
+*.sqlite3
+
+# PyInstaller / Build tools
+build/
+dist/
+release/
+*.spec
+
+# IDEs
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS files
+.DS_Store
+Thumbs.db

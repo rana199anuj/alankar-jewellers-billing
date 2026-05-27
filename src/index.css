@@ -1,0 +1,109 @@
+/* Tailwind CSS v4 Entry Point */
+@import "tailwindcss";
+
+/* Theme overrides using CSS Variables */
+:root {
+  --color-border-gold: #D4C4A8;
+  --color-deep-gold: #8E733E;
+  --color-primary: #725b29;
+  --color-primary-container: #af935b;
+  --color-soft-ivory: #FDFCF9;
+  --color-success-emerald: #2D5A27;
+  --color-charcoal-grey: #343A40;
+  --color-surface: #fff8f2;
+  --color-on-surface-variant: #4d463a;
+  --color-surface-container: #f4ede5;
+  --color-surface-container-low: #faf2eb;
+  --color-surface-container-high: #eee7e0;
+  --color-surface-container-highest: #e8e1da;
+  
+  --font-headline: 'Libre Caslon Text', Georgia, serif;
+  --font-body: 'Hanken Grotesk', system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background-color: var(--color-soft-ivory);
+  color: #1e1b17;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  /* Disable tap highlight on mobile devices */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Material Symbols Integration */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+}
+
+/* Custom premium classes from Stitch Design System */
+.luxury-card-border {
+  border: 1px solid var(--color-border-gold);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, var(--color-deep-gold) 0%, var(--color-border-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bill-paper {
+  background-image: radial-gradient(var(--color-border-gold) 0.5px, transparent 0.5px);
+  background-size: 20px 20px;
+  background-color: var(--color-soft-ivory);
+}
+
+/* Scrollbar customizations for mobile preview */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--color-soft-ivory);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-border-gold);
+  border-radius: 10px;
+}
+
+/* Page transitions and animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.step-transition {
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Print Stylesheet Overrides */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}
