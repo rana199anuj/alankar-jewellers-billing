@@ -102,8 +102,144 @@ body {
   .print-only {
     display: block !important;
   }
-  body {
+  body, html {
     background: white !important;
-    color: black !important;
+    color: #1e1b17 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100% !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
+  @page {
+    size: A4 portrait;
+    margin: 12mm !important; /* Elegant, standard A4 margins */
+  }
+  #printable-bill-paper {
+    border: 1px solid #D4C4A8 !important; /* Premium gold border */
+    box-shadow: none !important;
+    margin: 0 auto !important;
+    padding: 24px !important; /* Beautiful inner padding */
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    background-color: #ffffff !important;
+    border-radius: 8px !important;
+  }
+  
+  /* Compact branding, headers and elements inside printable-bill-paper */
+  #printable-bill-paper h2 {
+    font-size: 22px !important;
+    color: #8E733E !important;
+    margin-bottom: 2px !important;
+    margin-top: 0px !important;
+  }
+  #printable-bill-paper .text-center {
+    margin-bottom: 12px !important;
+  }
+  #printable-bill-paper p, #printable-bill-paper span, #printable-bill-paper td, #printable-bill-paper th {
+    font-size: 11px !important;
+  }
+  #printable-bill-paper .mb-6 {
+    margin-bottom: 0.75rem !important; /* Balanced margins to prevent spillover */
+  }
+  #printable-bill-paper .mb-8 {
+    margin-bottom: 0.75rem !important;
+  }
+  #printable-bill-paper .py-3 {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+  }
+  #printable-bill-paper .p-6 {
+    padding: 10px !important;
+  }
+  #printable-bill-paper .p-4 {
+    padding: 8px !important;
+  }
+  #printable-bill-paper .pb-3 {
+    padding-bottom: 6px !important;
+  }
+  #printable-bill-paper .pt-4 {
+    padding-top: 6px !important;
+  }
+  #printable-bill-paper .mt-3 {
+    margin-top: 6px !important;
+  }
+  #printable-bill-paper .mt-1 {
+    margin-top: 2px !important;
+  }
+  #printable-bill-paper .grid-cols-2 {
+    gap: 8px !important;
+  }
+  
+  /* Table row padding */
+  #printable-bill-paper table {
+    margin-top: 8px !important;
+  }
+  #printable-bill-paper table th, 
+  #printable-bill-paper table td {
+    padding: 6px 8px !important;
+  }
+  #printable-bill-paper img {
+    height: 42px !important; /* Beautifully sized signature stamp */
+    width: auto !important;
+  }
+  #printable-bill-paper .bill-paper {
+    page-break-inside: avoid !important;
+  }
+}
+
+/* Capacitor Mobile Safe Area Fixes */
+header.no-print {
+  padding-top: env(safe-area-inset-top, 0px) !important;
+  height: calc(4rem + env(safe-area-inset-top, 0px)) !important;
+}
+
+main.flex-grow {
+  padding-top: calc(4.5rem + env(safe-area-inset-top, 0px)) !important;
+  padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+/* Adjust paddings for page scroll areas when customized bottom actions are shown */
+main.flex-grow.pb-billing {
+  padding-bottom: calc(7rem + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+/* Bottom Nav bar container */
+nav.no-print.fixed {
+  padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+  height: calc(5rem + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+/* Sidebar Drawer CSS Translation Fallbacks */
+aside.no-print {
+  background-color: #FDFCF9 !important; /* Force solid background color */
+  transform: translateX(-100%) !important;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+aside.no-print.translate-x-0 {
+  transform: translateX(0) !important;
+}
+
+/* Drawer Backdrop Fallback */
+.drawer-backdrop {
+  background-color: rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Button Color Fallbacks */
+.bg-primary {
+  background-color: #725b29 !important;
+}
+.bg-deep-gold {
+  background-color: #8E733E !important;
+}
+.bg-emerald-700 {
+  background-color: #047857 !important;
+}
+.bg-emerald-800 {
+  background-color: #065f46 !important;
+}
+.text-white {
+  color: #ffffff !important;
 }

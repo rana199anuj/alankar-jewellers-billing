@@ -84,12 +84,27 @@ export default function Dashboard() {
         <div className="min-h-screen bg-soft-ivory flex flex-col font-body antialiased relative">
             {/* Top App Bar - Hidden during printing */}
             <header className="no-print flex justify-between items-center px-4 h-16 w-full fixed top-0 z-40 bg-soft-ivory border-b border-border-gold shadow-sm">
-                <button 
-                    onClick={toggleDrawer}
-                    className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-primary active:opacity-80 cursor-pointer"
-                >
-                    <span className="material-symbols-outlined">menu</span>
-                </button>
+                {page !== 'home' ? (
+                    <button 
+                        onClick={() => {
+                            if (page === 'invoice-preview') {
+                                setPage('history');
+                            } else {
+                                setPage('home');
+                            }
+                        }}
+                        className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-primary active:opacity-80 cursor-pointer"
+                    >
+                        <span className="material-symbols-outlined">arrow_back</span>
+                    </button>
+                ) : (
+                    <button 
+                        onClick={toggleDrawer}
+                        className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-primary active:opacity-80 cursor-pointer"
+                    >
+                        <span className="material-symbols-outlined">menu</span>
+                    </button>
+                )}
                 <h1 className="font-headline text-lg font-bold text-deep-gold tracking-widest uppercase">ALANKAR JEWELLERS</h1>
                 <button 
                     onClick={() => setPage('settings')}
@@ -103,7 +118,7 @@ export default function Dashboard() {
             {isDrawerOpen && (
                 <div 
                     onClick={toggleDrawer}
-                    className="no-print fixed inset-0 bg-black/40 z-45 transition-opacity duration-300 ease-out"
+                    className="no-print fixed inset-0 bg-black/40 z-45 transition-opacity duration-300 ease-out drawer-backdrop"
                 />
             )}
 
@@ -125,6 +140,27 @@ export default function Dashboard() {
                 </div>
                 
                 <nav className="flex-grow space-y-1">
+                    <button 
+                        onClick={() => { setPage('home'); setIsDrawerOpen(false); }}
+                        className={`w-full flex items-center gap-4 px-6 py-4 text-left transition-colors cursor-pointer ${page === 'home' ? 'bg-primary/10 text-primary font-bold border-r-4 border-primary' : 'text-on-surface-variant hover:bg-surface-container-high'}`}
+                    >
+                        <span className="material-symbols-outlined">dashboard</span>
+                        <span className="font-body text-sm font-semibold">Home Dashboard</span>
+                    </button>
+                    <button 
+                        onClick={() => { setPage('billing'); setIsDrawerOpen(false); }}
+                        className={`w-full flex items-center gap-4 px-6 py-4 text-left transition-colors cursor-pointer ${page === 'billing' ? 'bg-primary/10 text-primary font-bold border-r-4 border-primary' : 'text-on-surface-variant hover:bg-surface-container-high'}`}
+                    >
+                        <span className="material-symbols-outlined">receipt_long</span>
+                        <span className="font-body text-sm font-semibold">New Bill</span>
+                    </button>
+                    <button 
+                        onClick={() => { setPage('history'); setIsDrawerOpen(false); }}
+                        className={`w-full flex items-center gap-4 px-6 py-4 text-left transition-colors cursor-pointer ${page === 'history' ? 'bg-primary/10 text-primary font-bold border-r-4 border-primary' : 'text-on-surface-variant hover:bg-surface-container-high'}`}
+                    >
+                        <span className="material-symbols-outlined">history</span>
+                        <span className="font-body text-sm font-semibold">Billing History</span>
+                    </button>
                     <button 
                         onClick={() => { setPage('items'); setIsDrawerOpen(false); }}
                         className={`w-full flex items-center gap-4 px-6 py-4 text-left transition-colors cursor-pointer ${page === 'items' ? 'bg-primary/10 text-primary font-bold border-r-4 border-primary' : 'text-on-surface-variant hover:bg-surface-container-high'}`}
@@ -264,58 +300,60 @@ export default function Dashboard() {
                 )}
             </main>
 
-            {/* Bottom Navigation Bar - Hidden during printing */}
-            <nav className="no-print fixed bottom-0 left-0 w-full z-40 flex justify-around items-center h-20 bg-soft-ivory px-2 pb-2 border-t border-border-gold shadow-[0_-4px_16px_rgba(0,0,0,0.04)]">
-                <button 
-                    onClick={() => setPage('home')}
-                    className={`flex flex-col items-center justify-center px-4 py-1.5 rounded-xl transition-all cursor-pointer ${
-                        page === 'home' ? 'bg-primary text-white scale-[1.03] shadow-sm' : 'text-on-surface-variant hover:text-primary'
-                    }`}
-                >
-                    <span className="material-symbols-outlined text-lg">dashboard</span>
-                    <span className="font-body text-[9px] font-bold mt-0.5">Home</span>
-                </button>
-                
-                <button 
-                    onClick={() => setPage('billing')}
-                    className={`flex flex-col items-center justify-center px-4 py-1.5 rounded-xl transition-all cursor-pointer ${
-                        page === 'billing' ? 'bg-primary text-white scale-[1.03] shadow-sm' : 'text-on-surface-variant hover:text-primary'
-                    }`}
-                >
-                    <span className="material-symbols-outlined text-lg">receipt_long</span>
-                    <span className="font-body text-[9px] font-bold mt-0.5">New Bill</span>
-                </button>
+            {/* Bottom Navigation Bar - Hidden during printing and checkout/preview flows */}
+            {page !== 'billing' && page !== 'invoice-preview' && (
+                <nav className="no-print fixed bottom-0 left-0 w-full z-40 flex justify-around items-center h-20 bg-soft-ivory px-2 pb-2 border-t border-border-gold shadow-[0_-4px_16px_rgba(0,0,0,0.04)]">
+                    <button 
+                        onClick={() => setPage('home')}
+                        className={`flex flex-col items-center justify-center px-4 py-1.5 rounded-xl transition-all cursor-pointer ${
+                            page === 'home' ? 'bg-primary text-white scale-[1.03] shadow-sm' : 'text-on-surface-variant hover:text-primary'
+                        }`}
+                    >
+                        <span className="material-symbols-outlined text-lg">dashboard</span>
+                        <span className="font-body text-[9px] font-bold mt-0.5">Home</span>
+                    </button>
+                    
+                    <button 
+                        onClick={() => setPage('billing')}
+                        className={`flex flex-col items-center justify-center px-4 py-1.5 rounded-xl transition-all cursor-pointer ${
+                            page === 'billing' ? 'bg-primary text-white scale-[1.03] shadow-sm' : 'text-on-surface-variant hover:text-primary'
+                        }`}
+                    >
+                        <span className="material-symbols-outlined text-lg">receipt_long</span>
+                        <span className="font-body text-[9px] font-bold mt-0.5">New Bill</span>
+                    </button>
 
-                <button 
-                    onClick={() => setPage('items')}
-                    className={`flex flex-col items-center justify-center px-4 py-1.5 rounded-xl transition-all cursor-pointer ${
-                        page === 'items' ? 'bg-primary text-white scale-[1.03] shadow-sm' : 'text-on-surface-variant hover:text-primary'
-                    }`}
-                >
-                    <span className="material-symbols-outlined text-lg">diamond</span>
-                    <span className="font-body text-[9px] font-bold mt-0.5">Catalog</span>
-                </button>
+                    <button 
+                        onClick={() => setPage('items')}
+                        className={`flex flex-col items-center justify-center px-4 py-1.5 rounded-xl transition-all cursor-pointer ${
+                            page === 'items' ? 'bg-primary text-white scale-[1.03] shadow-sm' : 'text-on-surface-variant hover:text-primary'
+                        }`}
+                    >
+                        <span className="material-symbols-outlined text-lg">diamond</span>
+                        <span className="font-body text-[9px] font-bold mt-0.5">Catalog</span>
+                    </button>
 
-                <button 
-                    onClick={() => setPage('history')}
-                    className={`flex flex-col items-center justify-center px-4 py-1.5 rounded-xl transition-all cursor-pointer ${
-                        page === 'history' || page === 'invoice-preview' ? 'bg-primary text-white scale-[1.03] shadow-sm' : 'text-on-surface-variant hover:text-primary'
-                    }`}
-                >
-                    <span className="material-symbols-outlined text-lg">history</span>
-                    <span className="font-body text-[9px] font-bold mt-0.5">History</span>
-                </button>
+                    <button 
+                        onClick={() => setPage('history')}
+                        className={`flex flex-col items-center justify-center px-4 py-1.5 rounded-xl transition-all cursor-pointer ${
+                            page === 'history' || page === 'invoice-preview' ? 'bg-primary text-white scale-[1.03] shadow-sm' : 'text-on-surface-variant hover:text-primary'
+                        }`}
+                    >
+                        <span className="material-symbols-outlined text-lg">history</span>
+                        <span className="font-body text-[9px] font-bold mt-0.5">History</span>
+                    </button>
 
-                <button 
-                    onClick={() => setPage('loans')}
-                    className={`flex flex-col items-center justify-center px-4 py-1.5 rounded-xl transition-all cursor-pointer ${
-                        page === 'loans' ? 'bg-primary text-white scale-[1.03] shadow-sm' : 'text-on-surface-variant hover:text-primary'
-                    }`}
-                >
-                    <span className="material-symbols-outlined text-lg">account_balance</span>
-                    <span className="font-body text-[9px] font-bold mt-0.5">Loans</span>
-                </button>
-            </nav>
+                    <button 
+                        onClick={() => setPage('loans')}
+                        className={`flex flex-col items-center justify-center px-4 py-1.5 rounded-xl transition-all cursor-pointer ${
+                            page === 'loans' ? 'bg-primary text-white scale-[1.03] shadow-sm' : 'text-on-surface-variant hover:text-primary'
+                        }`}
+                    >
+                        <span className="material-symbols-outlined text-lg">account_balance</span>
+                        <span className="font-body text-[9px] font-bold mt-0.5">Loans</span>
+                    </button>
+                </nav>
+            )}
 
             {/* Notification UI */}
             {notification.show && (

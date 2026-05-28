@@ -205,20 +205,35 @@ export default function CreateBillView({ onBillGenerated, onNavigate }) {
 
             {/* Stepper Progress Indicator */}
             <div className="flex items-center justify-between px-2 py-1 bg-white border border-border-gold rounded-xl">
-                <div className="flex items-center gap-2">
+                <button 
+                    onClick={() => setCurrentStep(1)}
+                    className="flex items-center gap-2 cursor-pointer focus:outline-none hover:opacity-80 transition-opacity"
+                >
                     <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold font-headline transition-colors ${currentStep >= 1 ? 'bg-primary text-white' : 'bg-surface-container-high text-on-surface-variant'}`}>1</div>
                     <span className="font-body text-xs font-bold text-primary">Customer</span>
-                </div>
+                </button>
                 <div className="flex-grow h-0.5 bg-border-gold/30 mx-2"></div>
-                <div className="flex items-center gap-2">
+                <button 
+                    onClick={() => setCurrentStep(2)}
+                    className="flex items-center gap-2 cursor-pointer focus:outline-none hover:opacity-80 transition-opacity"
+                >
                     <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold font-headline transition-colors ${currentStep >= 2 ? 'bg-primary text-white' : 'bg-surface-container-high text-on-surface-variant'}`}>2</div>
                     <span className="font-body text-xs font-bold text-primary">Items</span>
-                </div>
+                </button>
                 <div className="flex-grow h-0.5 bg-border-gold/30 mx-2"></div>
-                <div className="flex items-center gap-2">
+                <button 
+                    onClick={() => {
+                        if (billItems.length === 0) {
+                            alert("Please add at least one ornament to proceed to Summary.");
+                            return;
+                        }
+                        setCurrentStep(3);
+                    }}
+                    className="flex items-center gap-2 cursor-pointer focus:outline-none hover:opacity-80 transition-opacity"
+                >
                     <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold font-headline transition-colors ${currentStep >= 3 ? 'bg-primary text-white' : 'bg-surface-container-high text-on-surface-variant'}`}>3</div>
                     <span className="font-body text-xs font-bold text-primary">Summary</span>
-                </div>
+                </button>
             </div>
 
             {/* Step 1: Customer Details */}
@@ -451,7 +466,7 @@ export default function CreateBillView({ onBillGenerated, onNavigate }) {
                                         <div className="flex items-center gap-3">
                                             <span className="font-headline font-bold text-sm text-deep-gold">₹{item.amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                                             <button 
-                                                onClick={() => handleDeleteDeleteItem(item.id)}
+                                                onClick={() => handleDeleteItem(item.id)}
                                                 className="text-red-500 hover:text-red-700 p-1 flex items-center justify-center cursor-pointer"
                                             >
                                                 <span className="material-symbols-outlined">delete</span>
@@ -580,7 +595,7 @@ export default function CreateBillView({ onBillGenerated, onNavigate }) {
             )}
 
             {/* Wizard Sticky Bottom Actions */}
-            <div className="fixed bottom-20 left-0 w-full bg-white border-t border-border-gold px-6 py-4 z-40 shadow-[0_-4px_25px_rgba(0,0,0,0.06)] flex justify-between items-center">
+            <div className="fixed bottom-0 left-0 w-full bg-white border-t border-border-gold px-6 py-4 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] z-40 shadow-[0_-4px_25px_rgba(0,0,0,0.06)] flex justify-between items-center wizard-bottom-actions">
                 <div>
                     <p className="font-body text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Estimated Total</p>
                     <p className="font-headline text-xl font-bold text-deep-gold">₹{grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>

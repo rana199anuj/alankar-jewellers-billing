@@ -86,8 +86,8 @@ export default function Invoice({ billData, onClose }) {
                     <title>Invoice #${invoice_no}</title>
                     <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;600;700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
                     <style>
-                        body { margin: 0; padding: 20px; font-family: 'Hanken Grotesk', sans-serif; background-color: #ffffff; color: #000000; }
-                        .bill-paper { max-width: 800px; margin: 0 auto; border: 1px solid #D4C4A8; padding: 30px; box-sizing: border-box; }
+                        body { margin: 0; padding: 10px; font-family: 'Hanken Grotesk', sans-serif; background-color: #ffffff; color: #000000; }
+                        .bill-paper { max-width: 750px; margin: 0 auto; border: 1px solid #D4C4A8; padding: 16px; box-sizing: border-box; page-break-inside: avoid; }
                         .text-center { text-align: center; }
                         .flex { display: flex; }
                         .justify-between { justify-content: space-between; }
@@ -97,14 +97,18 @@ export default function Invoice({ billData, onClose }) {
                         .gap-4 { gap: 16px; }
                         .border-t { border-top: 1px solid rgba(212, 196, 168, 0.3); }
                         .border-b { border-bottom: 1px solid rgba(212, 196, 168, 0.3); }
-                        .py-4 { padding-top: 16px; padding-bottom: 16px; }
-                        .mb-8 { margin-bottom: 32px; }
+                        .py-4 { padding-top: 10px; padding-bottom: 10px; }
+                        .mb-8 { margin-bottom: 15px; }
                         .w-full { width: 100%; }
-                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                        th, td { border: 1px solid #D4C4A8; padding: 8px; text-align: center; font-size: 13px; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+                        th, td { border: 1px solid #D4C4A8; padding: 5px 6px; text-align: center; font-size: 12px; }
                         th { background-color: #fff8f2; color: #8E733E; font-weight: bold; }
                         .text-right { text-align: right; }
                         .bg-light { background-color: #fff8f2; }
+                        @media print {
+                            body, html { margin: 0; padding: 0; }
+                            @page { size: portrait; margin: 6mm; }
+                        }
                     </style>
                 </head>
                 <body>
@@ -140,18 +144,6 @@ export default function Invoice({ billData, onClose }) {
                 </button>
             </div>
 
-            {/* Bill Header Info (Metadata) */}
-            <div className="no-print mb-4 flex justify-between items-end">
-                <div>
-                    <p className="font-body text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-0.5">INVOICE NO.</p>
-                    <p className="font-headline font-bold text-primary text-sm">#AJ-{invoice_no}</p>
-                </div>
-                <div className="text-right">
-                    <p className="font-body text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-0.5">DATE</p>
-                    <p className="font-headline font-bold text-primary text-sm">{date}</p>
-                </div>
-            </div>
-
             {/* The Physical Bill Layout Container (Canvas for print/download) */}
             <div id="printable-bill-paper" className="bill-paper border border-border-gold p-6 shadow-md mb-8 relative overflow-hidden bg-white">
                 {/* Gold Trim Corner Accent (Hidden in Print) */}
@@ -171,8 +163,20 @@ export default function Invoice({ billData, onClose }) {
                     <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold print:text-black">Budh Bazar, Noorpur (Bijnor) U.P.</p>
                 </div>
 
+                {/* Invoice Metadata Row (Visible both on screen and in print) */}
+                <div className="flex justify-between items-center mb-6 border-t border-b border-border-gold/30 print:border-black py-3 text-xs">
+                    <div>
+                        <span className="text-on-surface-variant block print:text-black font-semibold text-[10px] tracking-wider uppercase">Invoice No.</span>
+                        <span className="font-bold text-primary print:text-black text-sm">#AJ-{invoice_no}</span>
+                    </div>
+                    <div className="text-right">
+                        <span className="text-on-surface-variant block print:text-black font-semibold text-[10px] tracking-wider uppercase">Date</span>
+                        <span className="font-bold text-primary print:text-black text-sm">{date}</span>
+                    </div>
+                </div>
+
                 {/* Customer Details */}
-                <div className="mb-6 border-t border-b border-border-gold/30 print:border-black py-3">
+                <div className="mb-6 border-b border-border-gold/30 print:border-black pb-3">
                     <p className="font-body text-[10px] font-bold text-on-surface-variant mb-2 tracking-wider print:text-black">CUSTOMER DETAILS</p>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
                         <div>
@@ -227,7 +231,7 @@ export default function Invoice({ billData, onClose }) {
                             ))}
                             {/* Empty rows to simulate paper receipt if small number of items */}
                             {items.length < 3 && [...Array(3 - items.length)].map((_, i) => (
-                                <tr key={i} className="border-b border-border-gold/5 opacity-20">
+                                <tr key={i} className="border-b border-border-gold/5 opacity-20 print:hidden">
                                     <td className="p-2 text-left">&nbsp;</td>
                                     <td className="p-2"></td>
                                     <td className="p-2"></td>
@@ -308,7 +312,7 @@ export default function Invoice({ billData, onClose }) {
             </div>
 
             {/* Sticky Action Footer Bar */}
-            <div className="no-print fixed bottom-0 left-0 w-full bg-white p-4 border-t border-border-gold flex gap-3 z-50 shadow-[0_-8px_30px_rgba(0,0,0,0.06)]">
+            <div className="no-print fixed bottom-0 left-0 w-full bg-white p-4 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] border-t border-border-gold flex gap-3 z-50 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] invoice-actions-bar">
                 <button 
                     onClick={handleDownloadHTML}
                     className="flex-1 flex flex-col items-center justify-center bg-charcoal-grey text-white rounded-xl py-3 active:scale-[0.97] transition-all cursor-pointer"
